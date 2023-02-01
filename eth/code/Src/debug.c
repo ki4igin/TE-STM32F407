@@ -1,6 +1,7 @@
 // Includes --------------------------------------------------------------------
 #include "debug.h"
 // #include "usart_ex.h"
+#include "usbd_cdc_if.h"
 #include "stm32f4xx.h"
 #include <stdio.h>
 #include <stdarg.h>
@@ -26,6 +27,7 @@ void debug_printf(const char *fmt, ...)
     uart_send_array(DEBUG_UART, (uint8_t *)debug_buf, len);
 #endif
 #ifdef USE_USB
+    delay_ms(1000);
     CDC_Transmit_FS((uint8_t *)debug_buf, len);
 #endif
 

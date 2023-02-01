@@ -92,14 +92,12 @@ static void cmd_work(enum cmd cmd, struct pbuf *p)
         delay_ms(10);
         udp_disconnect(pcb);
         udp_server_status = UDP_SERVER_DISCONNECTED;
-        debug_printf("client disconnected\n");
-
-        ip.addr = __REV(*(uint32_t *)(p->payload + 4));
-        char *ip_str = ipaddr_ntoa(&ip);
-        debug_printf("ip change to: %s\n", ip_str);
-
+        debug_printf("client disconnected\nchange ip, reset ...\n");
+        delay_ms(100);
+        ip.addr = (*(uint32_t *)(p->payload + 4));
         settings_change_ipaddr(ip.addr);
 
+        NVIC_SystemReset();
         break;
     case CMD_ECHO:
         // udp_send(pcb, p);
@@ -137,12 +135,13 @@ void udp_server_init(void)
 
     pcb = udp_new();
 
-    // ip.addr = (*(uint32_t *)settings->ip_addr);
-    ip.addr = *(uint32_t *)IP_DEFAULT;
+    ip.addr = (*(uint32_t *)settings->ip_addr);
 
     udp_bind(pcb, &ip, UDP_SERVER_PORT);
     udp_recv(pcb, recv_callback, NULL);
     debug_printf("UDP Server Started\n");
+    char *ip_str = ipaddr_ntoa(&ip);
+    debug_printf("IP: %s\n", ip_str);
 }
 
 void udp_server_send(void *data, uint32_t size)

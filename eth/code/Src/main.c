@@ -26,6 +26,7 @@
 
 #include "debug.h"
 #include "udp_server.h"
+#include "settings.h"
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
@@ -87,7 +88,7 @@ int main(void)
     SystemClock_Config();
 
     /* USER CODE BEGIN SysInit */
-
+    settings_init();
     /* USER CODE END SysInit */
 
     /* Initialize all configured peripherals */
@@ -96,6 +97,7 @@ int main(void)
     MX_USB_DEVICE_Init();
     MX_TIM6_Init();
 
+    delay_ms(500);
     debug_printf("Base Init Complete\n");
     udp_server_init();
     /* USER CODE BEGIN 2 */

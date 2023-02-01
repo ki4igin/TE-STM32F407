@@ -85,10 +85,10 @@ CC_VERSION := $(shell $(CC) --version)
 # CFLAGS
 ###############################################################################
 # CPU
-CPU := -mcpu=cortex-m3
+CPU := -mcpu=cortex-m4
 
 # FPU
-FPU :=
+FPU := -mfpu=fpv4-sp-d16 -mfloat-abi=hard
 
 # MCU
 MCU := $(CPU) $(FPU) -mthumb
